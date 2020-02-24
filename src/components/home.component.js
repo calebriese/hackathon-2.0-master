@@ -2,31 +2,25 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Exercise = props => (
+const Home = props => (
   <tr>
-    <td>{props.exercise.username}</td>
-    <td>{props.exercise.description}</td>
-    <td>{props.exercise.duration}</td>
-    <td>{props.exercise.date.substring(0,10)}</td>
-    <td>
-      <Link to={"/edit/"+props.exercise._id}>edit</Link> | <button onClick={() => { props.deleteExercise(props.exercise._id) }}>delete</button>
-    </td>
+  
   </tr>
 )
 
-export default class ExercisesList extends Component {
+export default class HomeList extends Component {
   constructor(props) {
     super(props);
 
-    this.deleteExercise = this.deleteExercise.bind(this)
 
-    this.state = {exercises: []};
+
+    this.state = {home: []};
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/exercises')
+    axios.get('http://localhost:5000/home')
       .then(response => {
-        this.setState({ exercises: response.data })
+        this.setState({ home: response.data })
         console.log(response.data)
       })
       .catch((error) => {
@@ -34,37 +28,26 @@ export default class ExercisesList extends Component {
       })
   }
 
-  deleteExercise(id) {
-    axios.delete('http://localhost:5000/exercises/'+id)
-      .then(response => { console.log(response.data)});
+ 
 
-    this.setState({
-      exercises: this.state.exercises.filter(el => el._id !== id)
-    })
-  }
-
-  exerciseList() {
-    return this.state.exercises.map(currentexercise => {
-      return <Exercise exercise={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id}/>;
+  homeList() {
+    return this.state.home.map(currentHome => {
+      return <Home home={currentHome} deleteHome={this.deleteHome} key={currentHome._id}/>;
     })
   }
 
   render() {
     return (
       <div>
-        <h3>Food Inventory</h3>
+        <h3>HOME SCREEN</h3>
         <table className="table">
           <thead className="thead-light">
             <tr>
-              <th>Username</th>
-              <th>Description</th>
-              <th>Duration</th>
-              <th>Date</th>
-              <th>Actions</th>
+             
             </tr>
           </thead>
           <tbody>
-            { this.exerciseList() }
+            { this.homeList() }
           </tbody>
         </table>
       </div>
